@@ -117,7 +117,7 @@ if __name__ == "__main__":
         load_model_folder = f"./saved_models/{args.model_name}/{args.dataset_name}/{args.load_model_name}"
         early_stopping = EarlyStopping(patience=0, save_model_folder=load_model_folder,
                                        save_model_name=args.load_model_name, logger=logger, model_name=args.model_name)
-        early_stopping.load_checkpoint(model, map_location='cpu')
+        # early_stopping.load_checkpoint(model, map_location='cpu')
 
         # create the model for the node classification task
         node_classifier = MLPClassifier(input_dim=node_raw_features.shape[1], dropout=args.dropout)

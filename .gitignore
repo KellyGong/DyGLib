@@ -111,3 +111,5 @@ ENV/
 .vscode/
 DG_data/*/*
 processed_data/*/*
+/DG_data/
+/processed_data/

@@ -227,8 +227,8 @@ class DyGFormer(nn.Module):
 
         # pad the sequences
         # three ndarrays with shape (batch_size, max_seq_length)
-        padded_nodes_neighbor_ids = np.zeros((len(node_ids), max_seq_length)).astype(np.long)
-        padded_nodes_edge_ids = np.zeros((len(node_ids), max_seq_length)).astype(np.long)
+        padded_nodes_neighbor_ids = np.zeros((len(node_ids), max_seq_length)).astype(np.int_)
+        padded_nodes_edge_ids = np.zeros((len(node_ids), max_seq_length)).astype(np.int_)
         padded_nodes_neighbor_times = np.zeros((len(node_ids), max_seq_length)).astype(np.float32)
 
         for idx in range(len(node_ids)):
@@ -369,13 +369,13 @@ class NeighborCooccurrenceEncoder(nn.Module):
 
             # we need to use copy() to avoid the modification of src_padded_node_neighbor_ids
             # Tensor, shape (src_max_seq_length, )
-            src_padded_node_neighbor_counts_in_dst = torch.from_numpy(src_padded_node_neighbor_ids.copy()).apply_(lambda neighbor_id: dst_mapping_dict.get(neighbor_id, 0.0)).float().to(self.device)
+            src_padded_node_neighbor_counts_in_dst = torch.from_numpy(src_padded_node_neighbor_ids.copy()).apply_(lambda neighbor_id: dst_mapping_dict.get(neighbor_id, 0)).float().to(self.device)
             # Tensor, shape (src_max_seq_length, 2)
             src_padded_nodes_appearances.append(torch.stack([src_padded_node_neighbor_counts_in_src, src_padded_node_neighbor_counts_in_dst], dim=1))
 
             # we need to use copy() to avoid the modification of dst_padded_node_neighbor_ids
             # Tensor, shape (dst_max_seq_length, )
-            dst_padded_node_neighbor_counts_in_src = torch.from_numpy(dst_padded_node_neighbor_ids.copy()).apply_(lambda neighbor_id: src_mapping_dict.get(neighbor_id, 0.0)).float().to(self.device)
+            dst_padded_node_neighbor_counts_in_src = torch.from_numpy(dst_padded_node_neighbor_ids.copy()).apply_(lambda neighbor_id: src_mapping_dict.get(neighbor_id, 0)).float().to(self.device)
             # Tensor, shape (dst_max_seq_length, 2)
             dst_padded_nodes_appearances.append(torch.stack([dst_padded_node_neighbor_counts_in_src, dst_padded_node_neighbor_counts_in_dst], dim=1))
 
